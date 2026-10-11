@@ -6,7 +6,7 @@ import {
   Truck, Upload, Trash2, Eye, File, Check
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import { api } from '../api/axiosClient';
+import { api, BASE_URL } from '../api/axiosClient';
 
 export default function CustomerDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState('vehicles'); // 'vehicles' | 'book' | 'appointments' | 'history' | 'invoices' | 'profile'
@@ -192,7 +192,7 @@ export default function CustomerDashboard({ user, onLogout }) {
 
       // Submit via fetch with Bearer token
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/appointments', {
+      const res = await fetch(`${BASE_URL}/appointments`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -249,6 +249,11 @@ export default function CustomerDashboard({ user, onLogout }) {
   };
 
   const getQrUrl = (regNo) => {
+    const envAppUrl = import.meta.env.VITE_APP_URL;
+    if (envAppUrl) {
+      const base = envAppUrl.endsWith('/') ? envAppUrl.slice(0, -1) : envAppUrl;
+      return `${base}/?reg=${encodeURIComponent(regNo)}`;
+    }
     const host = window.location.host;
     return `${window.location.protocol}//${host}/?reg=${encodeURIComponent(regNo)}`;
   };
@@ -1085,7 +1090,7 @@ export default function CustomerDashboard({ user, onLogout }) {
                               {appt.insurance_documents.map((doc, idx) => (
                                 <a
                                   key={idx}
-                                  href={`/api/appointments/${appt.booking_id}/insurance/${doc.document_id}`}
+                                  href={`${BASE_URL}/appointments/${appt.booking_id}/insurance/${doc.document_id}`}
                                   target="_blank"
                                   rel="noreferrer"
                                   className="p-2 bg-slate-900 hover:bg-slate-800 text-cyan-300 rounded-xl border border-slate-800 flex items-center justify-between text-xs transition-colors"

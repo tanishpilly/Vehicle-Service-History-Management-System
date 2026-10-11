@@ -177,8 +177,13 @@ export default function Vehicles({ setActiveTab, onSelectHistoryReg }) {
     window.print();
   };
 
-  // Generate QR Code URL (LAN IP or Localhost)
+  // Generate QR Code URL (Vercel Production Domain, LAN IP or Localhost)
   const getVehicleQrUrl = (regNo) => {
+    const envAppUrl = import.meta.env.VITE_APP_URL;
+    if (envAppUrl) {
+      const base = envAppUrl.endsWith('/') ? envAppUrl.slice(0, -1) : envAppUrl;
+      return `${base}/?reg=${encodeURIComponent(regNo)}`;
+    }
     const port = window.location.port || '5173';
     const protocol = window.location.protocol;
 

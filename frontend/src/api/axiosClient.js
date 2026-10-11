@@ -1,5 +1,11 @@
 // API Helper module for communicating with Node.js Express REST API with Auth Token Support
-const BASE_URL = '/api';
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return '/api';
+  return envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
+};
+
+export const BASE_URL = getBaseUrl();
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');

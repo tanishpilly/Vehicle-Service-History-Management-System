@@ -6,15 +6,24 @@ frontend/node_modules/
 # Production Builds
 dist/
 build/
+frontend/dist/
+
+# Vercel Cache
+.vercel/
 
 # Environment Variables
 .env
 .env.local
 backend/.env
+backend/.env.local
+frontend/.env
+frontend/.env.local
 
-# Server Logs
+# Server Logs & Uploads Cache
 *.log
 npm-debug.log*
+backend/uploads/insurance_docs/*
+!backend/uploads/insurance_docs/.gitkeep
 
 # OS Files
 .DS_Store

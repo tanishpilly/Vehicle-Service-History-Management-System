@@ -394,6 +394,10 @@ exports.getInsuranceDocument = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Unauthorized access to document.' });
     }
 
+    if (doc.file_path && (doc.file_path.startsWith('http://') || doc.file_path.startsWith('https://'))) {
+      return res.redirect(doc.file_path);
+    }
+
     const filePath = doc.file_path;
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ success: false, message: 'Document file missing on server disk.' });
@@ -434,9 +438,18 @@ exports.deleteInsuranceDocument = async (req, res) => {
     // Delete DB record
     await db.query('DELETE FROM insurance_documents WHERE document_id = $1', [documentId]);
 
-    // Delete file from disk
-    if (fs.existsSync(doc.file_path)) {
-      fs.unlinkSync(doc.file_path);
+    // Delete file from cloud storage or local disk
+    if (doc.file_path && (doc.file_path.startsWith('http://') || doc.file_path.startsWith('https://'))) {
+      try {
+        const { cloudinary, isCloudinaryConfigured } = require('../middleware/uploadMiddleware');
+        if (isCloudinaryConfigured && doc.stored_filename) {
+          await cloudinary.uploader.destroy(doc.stored_filename);
+        }
+      } catch (cloudErr) {
+        console.warn('Cloud document deletion note:', cloudErr.message);
+      }
+    } else if (fs.existsSync(doc.file_path)) {
+      try { fs.unlinkSync(doc.file_path); } catch (e) {}
     }
 
     res.json({ success: true, message: 'Insurance document removed successfully.' });

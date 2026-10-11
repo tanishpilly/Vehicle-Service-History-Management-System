@@ -94,10 +94,14 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal Server Error', error: err.message });
 });
 
-// Start Express Server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`=======================================================`);
-  console.log(`🚀 Vehicle Service REST API Server running on port ${PORT}`);
-  console.log(`📊 Connected to PostgreSQL: ${process.env.PGDATABASE || 'vehicle_service_db'}`);
-  console.log(`=======================================================`);
-});
+// Start Express Server when run directly
+if (require.main === module) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`=======================================================`);
+    console.log(`🚀 Vehicle Service REST API Server running on port ${PORT}`);
+    console.log(`📊 Connected to PostgreSQL: ${process.env.PGDATABASE || 'vehicle_service_db'}`);
+    console.log(`=======================================================`);
+  });
+}
+
+module.exports = app;

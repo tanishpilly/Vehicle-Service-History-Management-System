@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Truck, Calendar, Clock, MapPin, Phone, User, FileText, CheckCircle2, AlertCircle, RefreshCw, ChevronDown, Download, Eye, Sparkles } from 'lucide-react';
-import { api } from '../api/axiosClient';
+import { api, BASE_URL } from '../api/axiosClient';
 
 export default function PickupRequests() {
   const [requests, setRequests] = useState([]);
@@ -309,7 +309,7 @@ export default function PickupRequests() {
 
             <div className="flex gap-3 pt-2">
               <a
-                href={`/api/appointments/${viewDoc.bookingId}/insurance/${viewDoc.doc.document_id}`}
+                href={`${BASE_URL}/appointments/${viewDoc.bookingId}/insurance/${viewDoc.doc.document_id}`}
                 target="_blank"
                 rel="noreferrer"
                 className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl text-center flex items-center justify-center gap-2"
