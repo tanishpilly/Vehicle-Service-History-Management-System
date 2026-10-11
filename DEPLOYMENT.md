@@ -105,7 +105,7 @@ This repository includes [`vercel.json`](vercel.json) and [`api/index.js`](api/i
 Vercel automatically detects settings via `vercel.json`:
 - **Framework Preset**: `Vite` (or `Other`)
 - **Root Directory**: `./` (Leave as root)
-- **Build Command**: `cd frontend && npm install && npm run build` (Handled by `vercel.json`)
+- **Build Command**: `cd frontend && npm install --include=dev && npm run build` (Handled by `vercel.json`)
 - **Output Directory**: `frontend/dist` (Handled by `vercel.json`)
 
 ### 3. Add Environment Variables in Vercel

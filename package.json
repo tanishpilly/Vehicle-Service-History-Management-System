@@ -4,7 +4,7 @@
   "private": true,
   "description": "Vehicle Service History Management System - Production Ready for Vercel",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
+    "build": "cd frontend && npm install --include=dev && npm run build",
     "start": "node backend/server.js",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev"
